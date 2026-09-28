@@ -6,51 +6,134 @@
   <title>संजीव | मेरी पर्सनल वेबसाइट</title>
   <meta name="description" content="संजीव का पर्सनल पेज। मैं कोडिंग और इलेक्ट्रॉनिक्स सीख रहा हूँ।">
   <style>
+    :root {
+      --bg: #f7f4ee;
+      --card: #ffffff;
+      --text: #2b2b28;
+      --line: #ddd6c7;
+      --main: #2f3e5c;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1c19;
+        --card: #2a2723;
+        --text: #efece4;
+        --line: #3a362e;
+        --main: #8ea3d6;
+      }
+    }
+    * { box-sizing: border-box; }
     body {
       font-family: sans-serif;
-      max-width: 600px;
-      margin: 0 auto;
+      margin: 0;
       padding: 20px;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.7;
-      background: #f7f4ee;
-      color: #2b2b28;
     }
-    h1 { color: #2f3e5c; margin-bottom: 0; }
+    .wrap { max-width: 600px; margin: 0 auto; }
+    h1 { color: var(--main); margin-bottom: 0; }
     .tagline { margin-top: 4px; opacity: 0.7; }
-    h2 { color: #2f3e5c; border-bottom: 2px solid #ddd6c7; padding-bottom: 4px; }
-    footer { margin-top: 40px; font-size: 14px; opacity: 0.6; }
+    h2 { color: var(--main); margin-top: 0; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-top: 16px;
+    }
+    button {
+      font: inherit;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      background: var(--main);
+      color: var(--bg);
+      cursor: pointer;
+      margin: 4px 4px 4px 0;
+    }
+    button:active { transform: scale(0.96); }
+    input {
+      font: inherit;
+      padding: 10px;
+      width: 46%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+    }
+    .big { font-size: 2.4rem; font-weight: bold; margin: 6px 0; }
+    footer { margin: 30px 0 10px; font-size: 14px; opacity: 0.6; text-align: center; }
   </style>
 </head>
 <body>
+<div class="wrap">
 
   <h1>संजीव</h1>
   <p class="tagline">कोडिंग सीखने वाला | इलेक्ट्रॉनिक्स का शौकीन</p>
 
-  <h2>मेरे बारे में</h2>
-  <p>नमस्ते! मेरा नाम संजीव है। मैंने अभी HTML और JavaScript सीखना शुरू किया है और अपने फोन के लिए खुद के ऐप बनाना चाहता हूँ।</p>
+  <div class="card">
+    <h2>मेरे बारे में</h2>
+    <p>नमस्ते! मेरा नाम संजीव है। मैंने HTML और JavaScript सीखना शुरू किया है और अपने फोन के लिए खुद के ऐप बनाना चाहता हूँ।</p>
+  </div>
 
-  <h2>मैं क्या सीख रहा हूँ</h2>
-  <ul>
-    <li>HTML, CSS और JavaScript</li>
-    <li>इलेक्ट्रॉनिक्स और सोल्डरिंग</li>
-    <li>मल्टीमीटर का इस्तेमाल</li>
-  </ul>
+  <div class="card">
+    <h2>मैं क्या सीख रहा हूँ</h2>
+    <ul>
+      <li>HTML, CSS और JavaScript</li>
+      <li>इलेक्ट्रॉनिक्स और सोल्डरिंग</li>
+      <li>मल्टीमीटर का इस्तेमाल</li>
+    </ul>
+  </div>
 
-  <h2>मेरे शौक</h2>
-  <ul>
-    <li>नई चीज़ें सीखना</li>
-    <li>कोडिंग करना</li>
-    <li>इलेक्ट्रॉनिक्स के प्रयोग करना</li>
-  </ul>
+  <div class="card">
+    <h2>🔢 क्लिक काउंटर</h2>
+    <div class="big" id="count">0</div>
+    <button onclick="badhao()">➕ बढ़ाओ</button>
+    <button onclick="ghatao()">➖ घटाओ</button>
+    <button onclick="reset()">🔄 रीसेट</button>
+  </div>
 
-  <h2>मेरे बनाए प्रोजेक्ट</h2>
-  <ul>
-    <li>क्लिक काउंटर ऐप</li>
-    <li>मिनी कैलकुलेटर</li>
-    <li>सेटिंग्स मेन्यू ऐप</li>
-  </ul>
+  <div class="card">
+    <h2>🧮 मिनी कैलकुलेटर</h2>
+    <input type="number" id="num1" placeholder="पहला नंबर">
+    <input type="number" id="num2" placeholder="दूसरा नंबर">
+    <br>
+    <button onclick="hisab('+')">+</button>
+    <button onclick="hisab('-')">−</button>
+    <button onclick="hisab('*')">×</button>
+    <button onclick="hisab('/')">÷</button>
+    <p id="result"><b>जवाब:</b> —</p>
+  </div>
 
   <footer>© 2026 संजीव</footer>
+</div>
 
+<script>
+  // ---- क्लिक काउंटर ----
+  var ginti = 0;
+  function dikhao() {
+    document.getElementById("count").innerText = ginti;
+  }
+  function badhao() { ginti = ginti + 1; dikhao(); }
+  function ghatao() { ginti = ginti - 1; dikhao(); }
+  function reset()  { ginti = 0; dikhao(); }
+
+  // ---- कैलकुलेटर ----
+  function hisab(chinh) {
+    var a = Number(document.getElementById("num1").value);
+    var b = Number(document.getElementById("num2").value);
+    var ans;
+
+    if (chinh === "+") { ans = a + b; }
+    else if (chinh === "-") { ans = a - b; }
+    else if (chinh === "*") { ans = a * b; }
+    else if (chinh === "/") {
+      if (b === 0) { ans = "0 से भाग नहीं हो सकता"; }
+      else { ans = a / b; }
+    }
+    document.getElementById("result").innerHTML = "<b>जवाब:</b> " + ans;
+  }
+</script>
 </body>
 </html>
