@@ -131,7 +131,15 @@
     <button onclick="postDalo()">पोस्ट करो</button>
     <div id="wall"></div>
   </div>
+  <div class="card">
+    <h2>🎉 मज़ा मस्ती</h2>
 
+    <button onclick="roastDo()">🔥 रोस्ट करो</button>
+    <button onclick="factDo()">🧠 रैंडम फैक्ट</button>
+    <button onclick="memeDo()">😂 मीम लाइन</button>
+
+    <p id="funBox" style="font-size:1.2rem; font-weight:bold; margin-top:14px;">बटन दबाओ भाई 👆</p>
+  </div>
   <footer>© 2026 संजीव</footer>
 </div>
 
@@ -213,6 +221,44 @@
       html += '</div>';
     }
     document.getElementById("wall").innerHTML = html;
+  }  // ---- मज़ा मस्ती ----
+  var roasts = [
+    "तुम इतने स्लो हो, Internet Explorer भी शरमा जाए 😂",
+    "तुम्हारा WiFi भी तुमसे तेज़ सोचता है 📶",
+    "भाई तुम्हारी बैटरी की तरह तुम्हारा भी mood 1% पर रहता है 🔋",
+    "तुम इतने unique हो कि Google पर भी search नहीं होते 🔍",
+    "तुम्हारा code तो चलता है, पर design देखकर भगवान भी रो दें 😭"
+  ];
+
+  var facts = [
+    "शहद कभी खराब नहीं होता, हज़ारों साल पुराना शहद भी खाने लायक मिला है 🍯",
+    "ऑक्टोपस के तीन दिल होते हैं 🐙",
+    "इंसान का दिमाग सोते वक़्त भी जागते वक़्त जितना ही एक्टिव रहता है 🧠",
+    "केले असल में जामुन (berry) की category में आते हैं, स्ट्रॉबेरी नहीं आती 🍌",
+    "एक दिन में इंसान लगभग 20,000 बार साँस लेता है 🌬️"
+  ];
+
+  var memes = [
+    "जब code एक बार में चल जाए: 😎👍",
+    "जब browser पर error आए: 💀😭",
+    "मेरा code: 'मैं तो सही हूँ' — Browser: 'नहीं भाई' 🤡",
+    "जब semicolon भूल जाओ: पूरी दुनिया रुक जाती है 🛑",
+    "Save किया, Run किया, फिर भी कुछ नहीं हुआ... क्लासिक 😐"
+  ];
+
+  function random(list) {
+    var index = Math.floor(Math.random() * list.length);
+    return list[index];
+  }
+
+  function roastDo() {
+    document.getElementById("funBox").innerText = random(roasts);
+  }
+  function factDo() {
+    document.getElementById("funBox").innerText = random(facts);
+  }
+  function memeDo() {
+    document.getElementById("funBox").innerText = random(memes);
   }
 </script>
 </body>
