@@ -353,3 +353,38 @@
 यहाँ आरती के बोल पेस्ट करो
     </div>
   </div>
+  <div class="card">
+    <h2>📱 मेरी मिनी सोशल वॉल</h2>
+
+    <input type="text" id="postBox" placeholder="क्या सोच रहे हो?">
+    <button onclick="postDalo()">पोस्ट करो</button>
+
+    <div id="wall"></div>
+  </div>  // ---- मिनी सोशल वॉल ----
+  var posts = [];
+
+  function postDalo() {
+    var box = document.getElementById("postBox");
+    var text = box.value.trim();
+    if (text === "") return;
+
+    posts.unshift({ text: text, likes: 0 });
+    box.value = "";
+    wallDikhao();
+  }
+
+  function like(index) {
+    posts[index].likes = posts[index].likes + 1;
+    wallDikhao();
+  }
+
+  function wallDikhao() {
+    var html = "";
+    for (var i = 0; i < posts.length; i++) {
+      html += '<div class="card" style="margin-top:10px;">';
+      html += '<p>' + posts[i].text + '</p>';
+      html += '<button onclick="like(' + i + ')">👍 लाइक (' + posts[i].likes + ')</button>';
+      html += '</div>';
+    }
+    document.getElementById("wall").innerHTML = html;
+  }
