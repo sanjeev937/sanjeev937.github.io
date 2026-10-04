@@ -145,6 +145,15 @@
     <input type="text" id="naamBox" placeholder="अपना नाम लिखो" style="width:100%; margin-bottom:8px;">
     <button onclick="personalityDo()">✨ पता करो</button>
     <p id="personalityBox" style="margin-top:14px; line-height:1.8;"></p>
+    </div>
+    <div class="card" style="text-align:center;">
+    <h2>✈️ मिनी एविएटर (सिर्फ मज़े के लिए)</h2>
+    <p>पॉइंट्स: <b id="points">100</b></p>
+    <input type="number" id="bet" placeholder="कितना दाँव लगाओ" style="width:60%;">
+    <button onclick="startGame()" id="startBtn">🚀 शुरू करो</button>
+    <div style="font-size:2.5rem; font-weight:bold; margin:16px 0;" id="multiplier">1.00x</div>
+    <button onclick="cashOut()" id="cashBtn" disabled>💰 कैश आउट</button>
+    <p id="gameMsg" style="font-weight:bold;"></p>
   </div>
   <footer>© 2026 संजीव</footer>
 </div>
@@ -313,6 +322,78 @@
     document.getElementById("personalityBox").innerText =
       line1 + " " + line2 + " " + line3 + " " + line4;
   }
+  // ---- मिनी एविएटर (सिर्फ खेल वाले पॉइंट्स, असली पैसा नहीं) ----
+  var myPoints = 100;
+  var currentBet = 0;
+  var mult = 1.00;
+  var crashPoint = 0;
+  var gameRunning = false;
+  var gameTimer = null;
+
+  function pointsDikhao() {
+    document.getElementById("points").innerText = myPoints;
+  }
+
+  function startGame() {
+    var betInput = document.getElementById("bet");
+    var bet = Number(betInput.value);
+
+    if (bet <= 0 || bet > myPoints) {
+      document.getElementById("gameMsg").innerText = "सही दाँव डालो (0 से ज़्यादा, पॉइंट्स से कम)";
+      return;
+    }
+
+    currentBet = bet;
+    myPoints = myPoints - bet;
+    pointsDikhao();
+
+    mult = 1.00;
+    gameRunning = true;
+
+    // क्रैश कब होगा, ये रैंडम तय होता है (1.0x से 10x के बीच कहीं भी)
+    crashPoint = 1 + Math.random() * 9;
+
+    document.getElementById("startBtn").disabled = true;
+    document.getElementById("cashBtn").disabled = false;
+    document.getElementById("gameMsg").innerText = "उड़ान शुरू... 🛫";
+
+    gameTimer = setInterval(function () {
+      mult = mult + 0.05;
+      document.getElementById("multiplier").innerText = mult.toFixed(2) + "x";
+
+      if (mult >= crashPoint) {
+        crash();
+      }
+    }, 100);
+  }
+
+  function cashOut() {
+    if (!gameRunning) return;
+    clearInterval(gameTimer);
+    gameRunning = false;
+
+    var jeeta = Math.floor(currentBet * mult);
+    myPoints = myPoints + jeeta;
+    pointsDikhao();
+
+    document.getElementById("gameMsg").innerText = "✅ " + mult.toFixed(2) + "x पर कैश आउट किया, " + jeeta + " पॉइंट्स जीते!";
+    resetButtons();
+  }
+
+  function crash() {
+    clearInterval(gameTimer);
+    gameRunning = false;
+    document.getElementById("multiplier").innerText = "💥 क्रैश " + mult.toFixed(2) + "x";
+    document.getElementById("gameMsg").innerText = "❌ क्रैश हो गया, " + currentBet + " पॉइंट्स हारे";
+    resetButtons();
+  }
+
+  function resetButtons() {
+    document.getElementById("startBtn").disabled = false;
+    document.getElementById("cashBtn").disabled = true;
+  }
+
+  pointsDikhao();
 </script>
 </body>
 </html>
