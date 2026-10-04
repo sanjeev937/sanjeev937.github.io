@@ -57,6 +57,7 @@
       margin: 4px 4px 4px 0;
     }
     button:active { transform: scale(0.96); }
+    button:disabled { opacity: 0.4; }
     input {
       font: inherit;
       padding: 10px;
@@ -76,6 +77,22 @@
     .roop { padding: 8px 10px; border-radius: 8px; border-bottom: 1px solid var(--line); }
     .roop.aaj { background: var(--hi); font-weight: bold; }
     .note { font-size: 13px; opacity: 0.65; margin-bottom: 0; }
+
+    .sky {
+      height: 120px;
+      position: relative;
+      background: linear-gradient(to top, var(--hi), transparent);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+    #plane {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      font-size: 2.5rem;
+      transition: all 0.1s;
+    }
   </style>
 </head>
 <body>
@@ -131,30 +148,22 @@
     <button onclick="postDalo()">पोस्ट करो</button>
     <div id="wall"></div>
   </div>
-  <div class="card">
-    <h2>🎉 मज़ा मस्ती</h2>
 
-    <button onclick="roastDo()">🔥 रोस्ट करो</button>
-    <button onclick="factDo()">🧠 रैंडम फैक्ट</button>
-    <button onclick="memeDo()">😂 मीम लाइन</button>
-
-    <p id="funBox" style="font-size:1.2rem; font-weight:bold; margin-top:14px;">बटन दबाओ भाई 👆</p>
-  </div>
-    <div class="card">
-    <h2>🔮 नाम की पर्सनालिटी</h2>
-    <input type="text" id="naamBox" placeholder="अपना नाम लिखो" style="width:100%; margin-bottom:8px;">
-    <button onclick="personalityDo()">✨ पता करो</button>
-    <p id="personalityBox" style="margin-top:14px; line-height:1.8;"></p>
-    </div>
-    <div class="card" style="text-align:center;">
+  <div class="card" style="text-align:center;">
     <h2>✈️ मिनी एविएटर (सिर्फ मज़े के लिए)</h2>
     <p>पॉइंट्स: <b id="points">100</b></p>
     <input type="number" id="bet" placeholder="कितना दाँव लगाओ" style="width:60%;">
     <button onclick="startGame()" id="startBtn">🚀 शुरू करो</button>
-    <div style="font-size:2.5rem; font-weight:bold; margin:16px 0;" id="multiplier">1.00x</div>
+
+    <div class="sky">
+      <div id="plane">✈️</div>
+    </div>
+    <div style="font-size:2rem; font-weight:bold;" id="multiplier">1.00x</div>
+
     <button onclick="cashOut()" id="cashBtn" disabled>💰 कैश आउट</button>
     <p id="gameMsg" style="font-weight:bold;"></p>
   </div>
+
   <footer>© 2026 संजीव</footer>
 </div>
 
@@ -236,92 +245,8 @@
       html += '</div>';
     }
     document.getElementById("wall").innerHTML = html;
-  }  // ---- मज़ा मस्ती ----
-  var roasts = [
-    "तुम इतने स्लो हो, Internet Explorer भी शरमा जाए 😂",
-    "तुम्हारा WiFi भी तुमसे तेज़ सोचता है 📶",
-    "भाई तुम्हारी बैटरी की तरह तुम्हारा भी mood 1% पर रहता है 🔋",
-    "तुम इतने unique हो कि Google पर भी search नहीं होते 🔍",
-    "तुम्हारा code तो चलता है, पर design देखकर भगवान भी रो दें 😭"
-  ];
-
-  var facts = [
-    "शहद कभी खराब नहीं होता, हज़ारों साल पुराना शहद भी खाने लायक मिला है 🍯",
-    "ऑक्टोपस के तीन दिल होते हैं 🐙",
-    "इंसान का दिमाग सोते वक़्त भी जागते वक़्त जितना ही एक्टिव रहता है 🧠",
-    "केले असल में जामुन (berry) की category में आते हैं, स्ट्रॉबेरी नहीं आती 🍌",
-    "एक दिन में इंसान लगभग 20,000 बार साँस लेता है 🌬️"
-  ];
-
-  var memes = [
-    "जब code एक बार में चल जाए: 😎👍",
-    "जब browser पर error आए: 💀😭",
-    "मेरा code: 'मैं तो सही हूँ' — Browser: 'नहीं भाई' 🤡",
-    "जब semicolon भूल जाओ: पूरी दुनिया रुक जाती है 🛑",
-    "Save किया, Run किया, फिर भी कुछ नहीं हुआ... क्लासिक 😐"
-  ];
-
-  function random(list) {
-    var index = Math.floor(Math.random() * list.length);
-    return list[index];
   }
 
-  function roastDo() {
-    document.getElementById("funBox").innerText = random(roasts);
-  }
-  function factDo() {
-    document.getElementById("funBox").innerText = random(facts);
-  }
-  function memeDo() {
-    document.getElementById("funBox").innerText = random(memes);
-  }
-    // ---- नाम की पर्सनालिटी ----
-  var achhiBaatein = [
-    "{नाम} बहुत भरोसेमंद इंसान है, दोस्त मुश्किल में हों तो सबसे पहले याद आते हैं।",
-    "{नाम} में एक अलग ही आत्मविश्वास है, जो भी करते हैं दिल से करते हैं।",
-    "{नाम} की सबसे बड़ी ताकत है धैर्य, मुश्किल हालात में भी शांत रहते हैं।",
-    "{नाम} बहुत क्रिएटिव सोचते हैं, इनके आइडिया अक्सर सबसे हटकर होते हैं।",
-    "{नाम} दिल के बहुत साफ हैं, बनावट बिल्कुल पसंद नहीं।",
-    "{नाम} में लीडरशिप के गुण साफ दिखते हैं, लोग अपने आप इनकी बात मानते हैं।",
-    "{नाम} बहुत मेहनती हैं, एक बार ठान लें तो पीछे नहीं हटते।"
-  ];
-
-  var buriBaatein = [
-    "{नाम} कभी-कभी बहुत ज़िद्दी हो जाते हैं, अपनी बात पर अड़ जाते हैं।",
-    "{नाम} को थोड़ा गुस्सा जल्दी आता है, पर ठंडा भी उतनी ही जल्दी होते हैं।",
-    "{नाम} कामों को टालने में माहिर हैं, 'कल कर लेंगे' इनका पसंदीदा वाक्य है।",
-    "{नाम} थोड़े आलसी भी हैं, सुबह जल्दी उठना इनके लिए चैलेंज है।",
-    "{नाम} कभी-कभी ज़रूरत से ज़्यादा सोच लेते हैं, छोटी बात को बड़ा बना देते हैं।",
-    "{नाम} को अपनी तारीफ सुनना बहुत पसंद है, हल्का सा घमंड भी छुपा है।"
-  ];
-
-  var majedarBaatein = [
-    "{नाम} को लगता है कि ये फोन में सबसे तेज़ टाइप करते हैं, पर ऑटोकरेक्ट हमेशा हरा देता है।",
-    "{नाम} की प्लेलिस्ट में एक ही गाना 50 बार सुना हुआ मिलेगा।",
-    "{नाम} रात 2 बजे तक जागकर 'कल जल्दी सोऊंगा' सोचते हैं।",
-    "{नाम} खाना ऑर्डर करते वक़्त 20 मिनट सिर्फ मेन्यू देखने में लगाते हैं।",
-    "{नाम} को लगता है परसों वाला काम भी 'अभी' हो सकता है।"
-  ];
-
-  function random(list) {
-    return list[Math.floor(Math.random() * list.length)];
-  }
-
-  function personalityDo() {
-    var naam = document.getElementById("naamBox").value.trim();
-    if (naam === "") {
-      document.getElementById("personalityBox").innerText = "पहले अपना नाम तो लिखो भाई 😄";
-      return;
-    }
-
-    var line1 = random(achhiBaatein).split("{नाम}").join(naam);
-    var line2 = random(achhiBaatein).split("{नाम}").join(naam);
-    var line3 = random(buriBaatein).split("{नाम}").join(naam);
-    var line4 = random(majedarBaatein).split("{नाम}").join(naam);
-
-    document.getElementById("personalityBox").innerText =
-      line1 + " " + line2 + " " + line3 + " " + line4;
-  }
   // ---- मिनी एविएटर (सिर्फ खेल वाले पॉइंट्स, असली पैसा नहीं) ----
   var myPoints = 100;
   var currentBet = 0;
@@ -349,9 +274,11 @@
 
     mult = 1.00;
     gameRunning = true;
-
-    // क्रैश कब होगा, ये रैंडम तय होता है (1.0x से 10x के बीच कहीं भी)
     crashPoint = 1 + Math.random() * 9;
+
+    document.getElementById("plane").style.bottom = "10px";
+    document.getElementById("plane").style.left = "10px";
+    document.getElementById("plane").innerText = "✈️";
 
     document.getElementById("startBtn").disabled = true;
     document.getElementById("cashBtn").disabled = false;
@@ -360,6 +287,8 @@
     gameTimer = setInterval(function () {
       mult = mult + 0.05;
       document.getElementById("multiplier").innerText = mult.toFixed(2) + "x";
+      document.getElementById("plane").style.bottom = (10 + (mult - 1) * 15) + "px";
+      document.getElementById("plane").style.left = (10 + (mult - 1) * 20) + "px";
 
       if (mult >= crashPoint) {
         crash();
@@ -383,7 +312,7 @@
   function crash() {
     clearInterval(gameTimer);
     gameRunning = false;
-    document.getElementById("multiplier").innerText = "💥 क्रैश " + mult.toFixed(2) + "x";
+    document.getElementById("plane").innerText = "💥";
     document.getElementById("gameMsg").innerText = "❌ क्रैश हो गया, " + currentBet + " पॉइंट्स हारे";
     resetButtons();
   }
