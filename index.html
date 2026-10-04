@@ -254,6 +254,8 @@
   var crashPoint = 0;
   var gameRunning = false;
   var gameTimer = null;
+  var cashedOut = false;
+  var cashedAt = 0;
 
   function pointsDikhao() {
     document.getElementById("points").innerText = myPoints;
@@ -274,7 +276,11 @@
 
     mult = 1.00;
     gameRunning = true;
-    crashPoint = 1 + Math.random() * 9;
+    cashedOut = false;
+
+    // रैंडम क्रैश पॉइंट: ज़्यादातर बार जल्दी (1x-3x), कभी-कभार बहुत बड़ा (100x तक भी)
+    crashPoint = 1 + (-Math.log(Math.random()) * 3);
+    if (crashPoint > 100) { crashPoint = 100; }
 
     document.getElementById("plane").style.bottom = "10px";
     document.getElementById("plane").style.left = "10px";
@@ -297,23 +303,30 @@
   }
 
   function cashOut() {
-    if (!gameRunning) return;
-    clearInterval(gameTimer);
-    gameRunning = false;
+    if (!gameRunning || cashedOut) return;
+    cashedOut = true;
+    cashedAt = mult;
 
     var jeeta = Math.floor(currentBet * mult);
     myPoints = myPoints + jeeta;
     pointsDikhao();
 
-    document.getElementById("gameMsg").innerText = "✅ " + mult.toFixed(2) + "x पर कैश आउट किया, " + jeeta + " पॉइंट्स जीते!";
-    resetButtons();
+    document.getElementById("gameMsg").innerText = "✅ तुमने " + mult.toFixed(2) + "x पर कैश आउट किया (+" + jeeta + " पॉइंट्स)। जहाज़ अभी भी उड़ रहा है...";
+    document.getElementById("cashBtn").disabled = true;
+    // ध्यान दो: यहाँ clearInterval नहीं किया, जहाज़ असली क्रैश तक उड़ता रहेगा
   }
 
   function crash() {
     clearInterval(gameTimer);
     gameRunning = false;
     document.getElementById("plane").innerText = "💥";
-    document.getElementById("gameMsg").innerText = "❌ क्रैश हो गया, " + currentBet + " पॉइंट्स हारे";
+
+    if (cashedOut) {
+      document.getElementById("gameMsg").innerText =
+        "💥 असली क्रैश " + mult.toFixed(2) + "x पर हुआ। तुम " + cashedAt.toFixed(2) + "x पर निकल गए थे!";
+    } else {
+      document.getElementById("gameMsg").innerText = "❌ क्रैश हो गया, " + currentBet + " पॉइंट्स हारे";
+    }
     resetButtons();
   }
 
