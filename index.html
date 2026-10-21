@@ -337,5 +337,41 @@
 
   pointsDikhao();
 </script>
+<div class="card">
+  <h2>🤖 मिनी AI से पूछो</h2>
+  <div id="chatBox" style="min-height:80px;max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;"></div>
+  <input id="chatInput" type="text" placeholder="कुछ पूछो... (जैसे: नमस्ते, तुम कौन हो)" style="width:100%;padding:10px;margin-bottom:8px;">
+  <button onclick="aiPucho()">पूछो</button>
+</div>
+
+<script>
+  function aiJawab(sawal) {
+    var s = sawal.toLowerCase();
+    if (s.indexOf("namaste") >= 0 || s.indexOf("नमस्ते") >= 0 || s.indexOf("hello") >= 0) {
+      return "नमस्ते! मैं संजीव का मिनी AI हूँ 😊";
+    } else if (s.indexOf("naam") >= 0 || s.indexOf("नाम") >= 0 || s.indexOf("kaun") >= 0 || s.indexOf("कौन") >= 0) {
+      return "मैं संजीव की वेबसाइट का एक छोटा बॉट हूँ।";
+    } else if (s.indexOf("sikh") >= 0 || s.indexOf("सीख") >= 0) {
+      return "संजीव अभी HTML, CSS, JavaScript और Python सीख रहा है।";
+    } else if (s.indexOf("navratri") >= 0 || s.indexOf("नवरात्रि") >= 0) {
+      return "नवरात्रि में माँ दुर्गा के नौ रूपों की पूजा होती है। 🙏";
+    } else if (s.indexOf("thank") >= 0 || s.indexOf("धन्यवाद") >= 0) {
+      return "आपका स्वागत है! 🙂";
+    } else {
+      return "ये मुझे अभी नहीं आता, संजीव मुझे और सिखाएगा! 😅";
+    }
+  }
+
+  function aiPucho() {
+    var box = document.getElementById("chatBox");
+    var inp = document.getElementById("chatInput");
+    var sawal = inp.value;
+    if (sawal == "") { return; }
+    box.innerHTML = box.innerHTML + "<p><b>तुम:</b> " + sawal + "</p>";
+    box.innerHTML = box.innerHTML + "<p><b>🤖:</b> " + aiJawab(sawal) + "</p>";
+    inp.value = "";
+    box.scrollTop = box.scrollHeight;
+  }
+</script>
 </body>
 </html>
