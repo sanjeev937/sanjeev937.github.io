@@ -373,5 +373,38 @@
     box.scrollTop = box.scrollHeight;
   }
 </script>
+<div class="card">
+  <h2>💰 मेरा खर्च हिसाब</h2>
+  <input id="kharchaNaam" type="text" placeholder="किस चीज़ का खर्च?" style="width:100%;padding:10px;margin-bottom:8px;">
+  <input id="kharchaRakam" type="number" placeholder="कितने रुपये?" style="width:100%;padding:10px;margin-bottom:8px;">
+  <button onclick="kharchaJodo()">जोड़ो</button>
+  <div id="kharchaList" style="margin-top:12px;"></div>
+  <p id="kharchaTotal"><b>कुल: ₹0</b></p>
+</div>
+
+<script>
+  var kharche = [];
+
+  function kharchaJodo() {
+    var naam = document.getElementById("kharchaNaam").value;
+    var rakam = Number(document.getElementById("kharchaRakam").value);
+    if (naam == "" || rakam <= 0) { return; }
+    kharche.push({ naam: naam, rakam: rakam });
+    document.getElementById("kharchaNaam").value = "";
+    document.getElementById("kharchaRakam").value = "";
+    kharchaDikhao();
+  }
+
+  function kharchaDikhao() {
+    var text = "";
+    var total = 0;
+    for (var i = 0; i < kharche.length; i++) {
+      text = text + "<p>" + kharche[i].naam + ": ₹" + kharche[i].rakam + "</p>";
+      total = total + kharche[i].rakam;
+    }
+    document.getElementById("kharchaList").innerHTML = text;
+    document.getElementById("kharchaTotal").innerHTML = "<b>कुल: ₹" + total + "</b>";
+  }
+</script>
 </body>
 </html>
