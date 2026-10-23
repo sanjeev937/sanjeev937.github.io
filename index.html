@@ -466,5 +466,28 @@ print("5 + 3 =", 5 + 3)</textarea>
 
   pgShuru();
 </script>
+<div class="card">
+  <h2>🗳️ वोट दे सकते हो?</h2>
+  <input id="umraBox" type="number" placeholder="अपनी उम्र लिखो" style="width:100%;padding:10px;margin-bottom:8px;">
+  <button onclick="umraJaancho()">जाँचो</button>
+  <p id="umraJawab" style="margin-top:10px;font-size:1.1em;"></p>
+</div>
+
+<script>
+  function umraJaancho() {
+    var umra = Number(document.getElementById("umraBox").value);
+    var jawab = "";
+
+    if (umra <= 0) {
+      jawab = "सही उम्र लिखो 🙂";
+    } else if (umra >= 18) {
+      jawab = "हाँ, आप वोट दे सकते हो! 🗳️";
+    } else {
+      jawab = (18 - umra) + " साल बाद वोट दे सकोगे 🙂";
+    }
+
+    document.getElementById("umraJawab").innerText = jawab;
+  }
+</script>
 </body>
 </html>
