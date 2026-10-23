@@ -422,26 +422,49 @@
   }
 
   kharchaDikhao();
+
 </script>
 <div class="card">
-  <h2>🐍 Python मेरी साइट पर</h2>
-  <input id="pyNaam" type="text" placeholder="अपना नाम लिखो" style="width:100%;padding:10px;margin-bottom:8px;">
-  <button py-click="pyNamaste">Python से नमस्ते</button>
-  <p id="pyOut"></p>
+  <h2>🐍 मेरा Python एडिटर</h2>
+  <p id="pgState">⏳ Python लोड हो रहा है... (10 से 40 सेकंड रुको)</p>
+  <textarea id="pgCode" rows="9" style="width:100%;padding:10px;font-family:monospace;">dost = ["Raju", "Amit", "Sonu"]
+for naam in dost:
+    print("नमस्ते", naam)
+
+print("5 + 3 =", 5 + 3)</textarea>
+  <button onclick="pgChalao()">▶ चलाओ</button>
+  <pre id="pgOut" style="margin-top:10px;white-space:pre-wrap;"></pre>
 </div>
 
-<link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
-<script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+<script>
+  var pgEngine = null;
 
-<script type="py">
-from pyscript import document
+  async function pgShuru() {
+    try {
+      pgEngine = await loadPyodide();
+      document.getElementById("pgState").innerText = "✅ Python तैयार है! कोड लिखो और ▶ दबाओ";
+    } catch (e) {
+      document.getElementById("pgState").innerText = "❌ Python लोड नहीं हुआ: " + e;
+    }
+  }
 
-def pyNamaste(event):
-    naam = document.getElementById("pyNaam").value
-    if naam == "":
-        document.getElementById("pyOut").innerText = "पहले नाम लिखो 😊"
-    else:
-        document.getElementById("pyOut").innerText = "नमस्ते " + naam + "! ये जवाब Python ने दिया 🐍"
+  async function pgChalao() {
+    var out = document.getElementById("pgOut");
+    if (pgEngine == null) {
+      out.innerText = "अभी Python लोड हो रहा है, थोड़ा रुको 🙏";
+      return;
+    }
+    try {
+      pgEngine.runPython("import sys, io\nsys.stdout = io.StringIO()");
+      pgEngine.runPython(document.getElementById("pgCode").value);
+      out.innerText = pgEngine.runPython("sys.stdout.getvalue()");
+    } catch (e) {
+      out.innerText = "गलती:\n" + e;
+    }
+  }
+
+  pgShuru();
 </script>
 </body>
 </html>
