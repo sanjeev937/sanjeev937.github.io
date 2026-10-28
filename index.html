@@ -489,5 +489,24 @@ print("5 + 3 =", 5 + 3)</textarea>
     document.getElementById("umraJawab").innerText = jawab;
   }
 </script>
+<div class="card">
+  <h2>🐍 मेरे Python सर्वर से बात करो</h2>
+  <input id="srvNaam" type="text" placeholder="अपना नाम लिखो" style="width:100%;padding:10px;margin-bottom:8px;">
+  <button onclick="srvPucho()">सर्वर से पूछो</button>
+  <p id="srvJawab" style="margin-top:10px;"></p>
+</div>
+
+<script>
+  function srvPucho() {
+    var naam = document.getElementById("srvNaam").value;
+    var out = document.getElementById("srvJawab");
+    if (naam == "") { out.innerText = "पहले नाम लिखो 🙂"; return; }
+    out.innerText = "⏳ सर्वर से पूछ रहा हूँ...";
+    fetch("https://sanjeev420.pythonanywhere.com/namaste?naam=" + encodeURIComponent(naam))
+      .then(function (r) { return r.json(); })
+      .then(function (d) { out.innerText = d.jawab; })
+      .catch(function (e) { out.innerText = "❌ सर्वर से जवाब नहीं आया"; });
+  }
+</script>
 </body>
 </html>
