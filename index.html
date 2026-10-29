@@ -508,5 +508,33 @@ print("5 + 3 =", 5 + 3)</textarea>
       .catch(function (e) { out.innerText = "❌ सर्वर से जवाब नहीं आया"; });
   }
 </script>
+<div class="card">
+  <h2>💬 मेरा Python चैटबॉट</h2>
+  <div id="botBox" style="min-height:80px;max-height:240px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;"></div>
+  <input id="botInput" type="text" placeholder="कुछ पूछो... (जैसे: नमस्ते, Python क्या है)" style="width:100%;padding:10px;margin-bottom:8px;">
+  <button onclick="botPucho()">भेजो</button>
+</div>
+
+<script>
+  function botLikho(kaun, text) {
+    var box = document.getElementById("botBox");
+    var p = document.createElement("p");
+    p.textContent = kaun + " " + text;
+    box.appendChild(p);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function botPucho() {
+    var inp = document.getElementById("botInput");
+    var sawal = inp.value.trim();
+    if (sawal == "") { return; }
+    botLikho("तुम:", sawal);
+    inp.value = "";
+    fetch("https://sanjeev420.pythonanywhere.com/bot?sawal=" + encodeURIComponent(sawal))
+      .then(function (r) { return r.json(); })
+      .then(function (d) { botLikho("🤖", d.jawab); })
+      .catch(function () { botLikho("🤖", "❌ सर्वर से जवाब नहीं आया"); });
+  }
+</script>
 </body>
 </html>
