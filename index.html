@@ -536,5 +536,123 @@ print("5 + 3 =", 5 + 3)</textarea>
       .catch(function () { botLikho("🤖", "❌ सर्वर से जवाब नहीं आया"); });
   }
 </script>
+<div class="card">
+  <h2>📒 मेरा हिसाब-किताब (Tally जैसा)</h2>
+  <input id="tlDate" type="date" style="width:100%;padding:10px;margin-bottom:8px;">
+  <input id="tlDr" type="text" placeholder="डेबिट खाता (जैसे: Cash)" style="width:100%;padding:10px;margin-bottom:8px;">
+  <input id="tlCr" type="text" placeholder="क्रेडिट खाता (जैसे: Sales)" style="width:100%;padding:10px;margin-bottom:8px;">
+  <input id="tlAmt" type="number" placeholder="रकम ₹" style="width:100%;padding:10px;margin-bottom:8px;">
+  <input id="tlNote" type="text" placeholder="विवरण (वैकल्पिक)" style="width:100%;padding:10px;margin-bottom:8px;">
+  <button onclick="tlJodo()">वाउचर जोड़ो</button>
+  <button onclick="tlSaaf()">सब मिटाओ</button>
+  <p id="tlMsg"></p>
+  <h3>खाता-बही शेष (Trial Balance)</h3>
+  <div id="tlTB"></div>
+  <h3>वाउचर सूची</h3>
+  <div id="tlList"></div>
+</div>
+
+<script>
+  var tlV = [];
+  try {
+    var tlS = localStorage.getItem("tlVouchers");
+    if (tlS) { tlV = JSON.parse(tlS); }
+  } catch (e) {}
+
+  document.getElementById("tlDate").valueAsDate = new Date();
+
+  function tlEsc(t) {
+    return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function tlSave() {
+    try { localStorage.setItem("tlVouchers", JSON.stringify(tlV)); } catch (e) {}
+  }
+
+  function tlRs(n) {
+    return "₹" + n.toLocaleString("en-IN");
+  }
+
+  function tlJodo() {
+    var d = document.getElementById("tlDate").value;
+    var dr = document.getElementById("tlDr").value.trim();
+    var cr = document.getElementById("tlCr").value.trim();
+    var amt = Number(document.getElementById("tlAmt").value);
+    var note = document.getElementById("tlNote").value.trim();
+    var msg = document.getElementById("tlMsg");
+
+    if (dr == "" || cr == "" || amt <= 0) {
+      msg.innerText = "डेबिट खाता, क्रेडिट खाता और रकम भरना ज़रूरी है 🙂";
+      return;
+    }
+    if (dr.toLowerCase() == cr.toLowerCase()) {
+      msg.innerText = "डेबिट और क्रेडिट एक ही खाता नहीं हो सकते।";
+      return;
+    }
+    tlV.push({ d: d, dr: dr, cr: cr, amt: amt, note: note });
+    tlSave();
+    msg.innerText = "✅ वाउचर जुड़ गया";
+    document.getElementById("tlDr").value = "";
+    document.getElementById("tlCr").value = "";
+    document.getElementById("tlAmt").value = "";
+    document.getElementById("tlNote").value = "";
+    tlDikhao();
+  }
+
+  function tlHatao(i) {
+    tlV.splice(i, 1);
+    tlSave();
+    tlDikhao();
+  }
+
+  function tlSaaf() {
+    tlV = [];
+    tlSave();
+    document.getElementById("tlMsg").innerText = "सब मिटा दिया";
+    tlDikhao();
+  }
+
+  function tlDikhao() {
+    var bal = {};
+    var naam = {};
+    for (var i = 0; i < tlV.length; i++) {
+      var v = tlV[i];
+      var kd = v.dr.toLowerCase();
+      var kc = v.cr.toLowerCase();
+      naam[kd] = v.dr;
+      naam[kc] = v.cr;
+      bal[kd] = (bal[kd] || 0) + v.amt;
+      bal[kc] = (bal[kc] || 0) - v.amt;
+    }
+
+    var tb = "<table style='width:100%;border-collapse:collapse;'>";
+    tb += "<tr><th align='left'>खाता</th><th align='right'>Debit</th><th align='right'>Credit</th></tr>";
+    var sumDr = 0;
+    var sumCr = 0;
+    for (var k in bal) {
+      var b = bal[k];
+      var dr = b > 0 ? b : 0;
+      var cr = b < 0 ? -b : 0;
+      sumDr += dr;
+      sumCr += cr;
+      tb += "<tr><td>" + tlEsc(naam[k]) + "</td><td align='right'>" + (dr ? tlRs(dr) : "") + "</td><td align='right'>" + (cr ? tlRs(cr) : "") + "</td></tr>";
+    }
+    tb += "<tr><td><b>कुल</b></td><td align='right'><b>" + tlRs(sumDr) + "</b></td><td align='right'><b>" + tlRs(sumCr) + "</b></td></tr>";
+    tb += "</table>";
+    tb += "<p>" + (sumDr == sumCr ? "मिलान ✅ (Debit = Credit)" : "⚠️ मिलान नहीं हुआ") + "</p>";
+    document.getElementById("tlTB").innerHTML = tlV.length ? tb : "<p>अभी कोई वाउचर नहीं है।</p>";
+
+    var list = "";
+    for (var j = tlV.length - 1; j >= 0; j--) {
+      var w = tlV[j];
+      list += "<p>" + tlEsc(w.d) + " | <b>" + tlEsc(w.dr) + "</b> Dr → <b>" + tlEsc(w.cr) + "</b> Cr | " + tlRs(w.amt) +
+        (w.note ? " | " + tlEsc(w.note) : "") +
+        " <button onclick='tlHatao(" + j + ")'>❌</button></p>";
+    }
+    document.getElementById("tlList").innerHTML = list;
+  }
+
+  tlDikhao();
+</script>
 </body>
 </html>
