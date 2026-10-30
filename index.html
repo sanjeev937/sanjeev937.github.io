@@ -1,658 +1,271 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>संजीव | मेरी पर्सनल वेबसाइट</title>
-  <meta name="description" content="संजीव का पर्सनल पेज। मैं कोडिंग और इलेक्ट्रॉनिक्स सीख रहा हूँ।">
-  <style>
-    :root {
-      --bg: #f7f4ee;
-      --card: #ffffff;
-      --text: #2b2b28;
-      --line: #ddd6c7;
-      --main: #2f3e5c;
-      --devi: #b5432f;
-      --hi: #fbe9e4;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>संजीव | मेरी वेबसाइट</title>
+<meta name="description" content="संजीव की निजी वेबसाइट: कोडिंग, Python और AI सीखने का सफ़र, और मेरे बनाए प्रोजेक्ट।">
+<style>
+  :root{
+    --bg:#faf8f4;
+    --card:#ffffff;
+    --text:#23211d;
+    --muted:#6b665d;
+    --line:#e6e0d4;
+    --main:#c2410c;
+    --main-soft:#fdeadc;
+    --on-main:#ffffff;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#16140f;
+      --card:#211e17;
+      --text:#f2eee4;
+      --muted:#a39d8f;
+      --line:#38342a;
+      --main:#fb923c;
+      --main-soft:#3a2514;
+      --on-main:#1b1209;
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #1e1c19;
-        --card: #2a2723;
-        --text: #efece4;
-        --line: #3a362e;
-        --main: #8ea3d6;
-        --devi: #e88a77;
-        --hi: #3d2a25;
-      }
-    }
-    * { box-sizing: border-box; }
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-    }
-    .wrap { max-width: 600px; margin: 0 auto; }
-    h1 { color: var(--main); margin-bottom: 0; }
-    .tagline { margin-top: 4px; opacity: 0.7; }
-    h2 { color: var(--main); margin-top: 0; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 16px 18px;
-      margin-top: 16px;
-    }
-    button {
-      font: inherit;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 8px;
-      background: var(--main);
-      color: var(--bg);
-      cursor: pointer;
-      margin: 4px 4px 4px 0;
-    }
-    button:active { transform: scale(0.96); }
-    button:disabled { opacity: 0.4; }
-    input {
-      font: inherit;
-      padding: 10px;
-      width: 46%;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: transparent;
-      color: var(--text);
-    }
-    #postBox { width: 100%; margin-bottom: 8px; }
-    .big { font-size: 2.4rem; font-weight: bold; margin: 6px 0; }
-    footer { margin: 30px 0 10px; font-size: 14px; opacity: 0.6; text-align: center; }
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif;
+    line-height:1.65;
+  }
+  a{ color:inherit; }
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 20px; }
 
-    .navratri { border: 2px solid var(--devi); }
-    .navratri h2 { color: var(--devi); }
-    .nav-msg { font-size: 1.3rem; font-weight: bold; margin: 6px 0 12px; }
-    .roop { padding: 8px 10px; border-radius: 8px; border-bottom: 1px solid var(--line); }
-    .roop.aaj { background: var(--hi); font-weight: bold; }
-    .note { font-size: 13px; opacity: 0.65; margin-bottom: 0; }
+  /* ऊपर की पट्टी */
+  .top{
+    position:sticky; top:0; z-index:10;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+  }
+  .top .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; padding-top:12px; padding-bottom:12px;
+  }
+  .logo{ font-weight:800; font-size:1.15rem; text-decoration:none; }
+  .logo span{ color:var(--main); }
+  nav{ display:flex; gap:4px; flex-wrap:wrap; }
+  nav a{
+    text-decoration:none; font-size:.92rem; color:var(--muted);
+    padding:6px 10px; border-radius:999px;
+  }
+  nav a:hover{ background:var(--main-soft); color:var(--main); }
 
-    .sky {
-      height: 120px;
-      position: relative;
-      background: linear-gradient(to top, var(--hi), transparent);
-      border-radius: 10px;
-      overflow: hidden;
-      margin: 16px 0;
-    }
-    #plane {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      font-size: 2.5rem;
-      transition: all 0.1s;
-    }
-  </style>
+  /* शुरुआत वाला हिस्सा */
+  .hero{ padding-top:56px; padding-bottom:40px; }
+  .hello{ color:var(--main); font-weight:700; letter-spacing:.02em; margin:0 0 8px; }
+  h1{
+    font-size:clamp(1.9rem, 6vw, 3.2rem);
+    line-height:1.2; margin:0 0 16px; font-weight:800;
+  }
+  .lead{
+    font-size:clamp(1.02rem, 2.4vw, 1.2rem);
+    color:var(--muted); max-width:640px; margin:0 0 26px;
+  }
+  .btns{ display:flex; gap:12px; flex-wrap:wrap; }
+  .btn{
+    display:inline-block; text-decoration:none; font-weight:700;
+    padding:12px 22px; border-radius:12px;
+    background:var(--main); color:var(--on-main);
+    border:2px solid var(--main);
+  }
+  .btn.alt{ background:transparent; color:var(--main); }
+  .btn:active{ transform:scale(.98); }
+
+  /* सेक्शन */
+  section{ padding:34px 0; scroll-margin-top:64px; }
+  h2{ font-size:1.5rem; margin:0 0 18px; }
+  h2 small{ color:var(--muted); font-weight:500; font-size:.9rem; margin-left:8px; }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px;
+  }
+  .about p{ margin:0 0 10px; }
+  .about p:last-child{ margin:0; }
+
+  .chips{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    background:var(--main-soft); color:var(--main);
+    padding:8px 16px; border-radius:999px; font-weight:600; font-size:.95rem;
+  }
+
+  .grid{
+    display:grid; gap:16px;
+    grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+  }
+  .proj{
+    display:flex; flex-direction:column; gap:8px;
+    text-decoration:none;
+    transition:transform .15s, border-color .15s;
+  }
+  .proj:hover{ transform:translateY(-3px); border-color:var(--main); }
+  .proj .ico{ font-size:1.8rem; }
+  .proj h3{ margin:0; font-size:1.1rem; }
+  .proj p{ margin:0; color:var(--muted); font-size:.95rem; flex:1; }
+  .tag{
+    align-self:flex-start; font-size:.78rem; font-weight:700;
+    padding:3px 10px; border-radius:999px;
+    border:1px solid var(--line); color:var(--muted);
+  }
+
+  .steps{ list-style:none; margin:0; padding:0; display:grid; gap:12px; }
+  .steps li{
+    display:flex; gap:14px; align-items:flex-start;
+    background:var(--card); border:1px solid var(--line);
+    border-radius:14px; padding:14px 16px;
+  }
+  .num{
+    flex:none; width:32px; height:32px; border-radius:50%;
+    background:var(--main); color:var(--on-main);
+    display:grid; place-items:center; font-weight:800;
+  }
+
+  footer{
+    margin-top:30px; padding:26px 0 40px;
+    border-top:1px solid var(--line); color:var(--muted); font-size:.92rem;
+  }
+  footer .wrap{ display:flex; flex-wrap:wrap; gap:10px 24px; justify-content:space-between; }
+
+  @media (min-width:760px){
+    .hero{ padding-top:90px; padding-bottom:60px; }
+    .steps{ grid-template-columns:repeat(2, 1fr); }
+    .two{ display:grid; grid-template-columns:1.2fr 1fr; gap:16px; }
+  }
+  @media (max-width:520px){
+    nav a{ padding:6px 8px; font-size:.88rem; }
+  }
+</style>
 </head>
 <body>
-<div class="wrap">
 
-  <h1>संजीव</h1>
-  <p class="tagline">कोडिंग सीखने वाला | इलेक्ट्रॉनिक्स का शौकीन</p>
-
-  <div class="card navratri">
-    <h2>🔱 शारदीय नवरात्रि 2026</h2>
-    <div class="nav-msg" id="navMsg"></div>
-    <div id="roopList"></div>
-    <p class="note">तिथियाँ पंचांग के अनुसार थोड़ी आगे-पीछे हो सकती हैं।</p>
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top">संजीव<span>.</span></a>
+    <nav>
+      <a href="#parichay">परिचय</a>
+      <a href="#projects">प्रोजेक्ट</a>
+      <a href="#safar">सफ़र</a>
+      <a href="#sampark">संपर्क</a>
+    </nav>
   </div>
+</header>
 
-  <div class="card">
-    <h2>मेरे बारे में</h2>
-    <p>नमस्ते! मेरा नाम संजीव है। मैंने HTML और JavaScript सीखना शुरू किया है और अपने फोन के लिए खुद के ऐप बनाना चाहता हूँ।</p>
-  </div>
+<main id="top">
 
-  <div class="card">
-    <h2>मैं क्या सीख रहा हूँ</h2>
-    <ul>
-      <li>HTML, CSS और JavaScript</li>
-      <li>इलेक्ट्रॉनिक्स और सोल्डरिंग</li>
-      <li>मल्टीमीटर का इस्तेमाल</li>
-    </ul>
-  </div>
-
-  <div class="card">
-    <h2>🔢 क्लिक काउंटर</h2>
-    <div class="big" id="count">0</div>
-    <button onclick="badhao()">➕ बढ़ाओ</button>
-    <button onclick="ghatao()">➖ घटाओ</button>
-    <button onclick="reset()">🔄 रीसेट</button>
-  </div>
-
-  <div class="card">
-    <h2>🧮 मिनी कैलकुलेटर</h2>
-    <input type="number" id="num1" placeholder="पहला नंबर">
-    <input type="number" id="num2" placeholder="दूसरा नंबर">
-    <br>
-    <button onclick="hisab('+')">+</button>
-    <button onclick="hisab('-')">−</button>
-    <button onclick="hisab('*')">×</button>
-    <button onclick="hisab('/')">÷</button>
-    <p id="result"><b>जवाब:</b> —</p>
-  </div>
-
-  <div class="card">
-    <h2>📱 मेरी मिनी सोशल वॉल</h2>
-    <input type="text" id="postBox" placeholder="क्या सोच रहे हो?">
-    <button onclick="postDalo()">पोस्ट करो</button>
-    <div id="wall"></div>
-  </div>
-
-  <div class="card" style="text-align:center;">
-    <h2>✈️ मिनी एविएटर (सिर्फ मज़े के लिए)</h2>
-    <p>पॉइंट्स: <b id="points">100</b></p>
-    <input type="number" id="bet" placeholder="कितना दाँव लगाओ" style="width:60%;">
-    <button onclick="startGame()" id="startBtn">🚀 शुरू करो</button>
-
-    <div class="sky">
-      <div id="plane">✈️</div>
+  <div class="wrap hero">
+    <p class="hello">नमस्ते 👋</p>
+    <h1>मैं संजीव हूँ,<br>कोडिंग और AI सीख रहा हूँ।</h1>
+    <p class="lead">मैंने अपना फ़ोन ही अपनी पाठशाला बना लिया। इसी से अपनी वेबसाइट बनाई, Python सीखी और अपना सर्वर चलाया। यहाँ मेरे बनाए प्रोजेक्ट हैं।</p>
+    <div class="btns">
+      <a class="btn" href="#projects">मेरे प्रोजेक्ट देखो</a>
+      <a class="btn alt" href="https://github.com/sanjeev937" target="_blank" rel="noopener">GitHub पर आओ</a>
     </div>
-    <div style="font-size:2rem; font-weight:bold;" id="multiplier">1.00x</div>
-
-    <button onclick="cashOut()" id="cashBtn" disabled>💰 कैश आउट</button>
-    <p id="gameMsg" style="font-weight:bold;"></p>
   </div>
 
-  <footer>© 2026 संजीव</footer>
-</div>
+  <div class="wrap">
 
-<script>
-  // ---- क्लिक काउंटर ----
-  var ginti = 0;
-  function dikhao() { document.getElementById("count").innerText = ginti; }
-  function badhao() { ginti = ginti + 1; dikhao(); }
-  function ghatao() { ginti = ginti - 1; dikhao(); }
-  function reset()  { ginti = 0; dikhao(); }
+    <section id="parichay">
+      <h2>मेरे बारे में</h2>
+      <div class="two">
+        <div class="card about">
+          <p>मैं शुरुआत से कोडिंग सीख रहा हूँ, वो भी सिर्फ़ Android फ़ोन से। मेरा मक़सद है कि कोई असली समस्या हल करने वाली चीज़ें बनाऊँ, जैसे छोटे दुकानदार के लिए हिसाब-किताब का औज़ार।</p>
+          <p>मुझे इलेक्ट्रॉनिक्स की मरम्मत में भी दिलचस्पी है, और English को बेहतर बना रहा हूँ।</p>
+        </div>
+        <div class="card">
+          <p style="margin:0 0 12px;font-weight:700;">जो सीख रहा हूँ</p>
+          <div class="chips">
+            <span class="chip">HTML</span>
+            <span class="chip">CSS</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">Python</span>
+            <span class="chip">Flask</span>
+            <span class="chip">SQL</span>
+            <span class="chip">GitHub</span>
+            <span class="chip">English</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  // ---- कैलकुलेटर ----
-  function hisab(chinh) {
-    var a = Number(document.getElementById("num1").value);
-    var b = Number(document.getElementById("num2").value);
-    var ans;
-    if (chinh === "+") { ans = a + b; }
-    else if (chinh === "-") { ans = a - b; }
-    else if (chinh === "*") { ans = a * b; }
-    else if (chinh === "/") {
-      if (b === 0) { ans = "0 से भाग नहीं हो सकता"; }
-      else { ans = a / b; }
-    }
-    document.getElementById("result").innerHTML = "<b>जवाब:</b> " + ans;
-  }
+    <section id="projects">
+      <h2>मेरे प्रोजेक्ट</h2>
+      <div class="grid">
 
-  // ---- नवरात्रि ----
-  var shuru = new Date(2026, 9, 11);
-  var roop = [
-    "माँ शैलपुत्री", "माँ ब्रह्मचारिणी", "माँ चंद्रघंटा",
-    "माँ कूष्मांडा", "माँ स्कंदमाता", "माँ कात्यायनी",
-    "माँ कालरात्रि", "माँ महागौरी", "माँ सिद्धिदात्री"
-  ];
-  function navratriDikhao() {
-    var aaj = new Date();
-    aaj.setHours(0, 0, 0, 0);
-    var farq = Math.round((shuru - aaj) / 86400000);
-    var din = 1 - farq;
-    var msg = document.getElementById("navMsg");
-    if (farq > 0) {
-      msg.innerText = "नवरात्रि शुरू होने में " + farq + " दिन बाकी हैं 🙏";
-    } else if (din <= 9) {
-      msg.innerText = "आज नवरात्रि का दिन " + din + ": " + roop[din - 1] + " 🙏";
-    } else if (din === 10) {
-      msg.innerText = "आज विजयादशमी (दशहरा) है 🏹";
-    } else {
-      msg.innerText = "नवरात्रि 2026 पूरी हुई। जय माता दी! 🙏";
-    }
-    var html = "";
-    for (var i = 0; i < roop.length; i++) {
-      var t = new Date(2026, 9, 11 + i);
-      var cls = (i + 1 === din) ? "roop aaj" : "roop";
-      html += '<div class="' + cls + '">दिन ' + (i + 1) + " (" + t.getDate() + " अक्टूबर): " + roop[i] + "</div>";
-    }
-    document.getElementById("roopList").innerHTML = html;
-  }
-  navratriDikhao();
+        <a class="card proj" href="hisab.html">
+          <span class="ico">📒</span>
+          <h3>हिसाब-किताब (Tally जैसा)</h3>
+          <p>डबल-एंट्री वाउचर और Trial Balance। सीखने का एक मॉडल, जिसे आगे बढ़ा रहा हूँ।</p>
+          <span class="tag">JavaScript</span>
+        </a>
 
-  // ---- मिनी सोशल वॉल ----
-  var posts = [];
-  function postDalo() {
-    var box = document.getElementById("postBox");
-    var text = box.value.trim();
-    if (text === "") return;
-    posts.unshift({ text: text, likes: 0 });
-    box.value = "";
-    wallDikhao();
-  }
-  function like(index) {
-    posts[index].likes = posts[index].likes + 1;
-    wallDikhao();
-  }
-  function wallDikhao() {
-    var html = "";
-    for (var i = 0; i < posts.length; i++) {
-      html += '<div class="card" style="margin-top:10px;">';
-      html += '<p>' + posts[i].text + '</p>';
-      html += '<button onclick="like(' + i + ')">👍 लाइक (' + posts[i].likes + ')</button>';
-      html += '</div>';
-    }
-    document.getElementById("wall").innerHTML = html;
-  }
+        <a class="card proj" href="coder.html">
+          <span class="ico">🧰</span>
+          <h3>कोडर टूलबॉक्स</h3>
+          <p>JSON सुधारो, Base64, अक्षर गिनती, रंग कोड और कोडिंग की चीट-शीट।</p>
+          <span class="tag">JavaScript</span>
+        </a>
 
-  // ---- मिनी एविएटर (सिर्फ खेल वाले पॉइंट्स, असली पैसा नहीं) ----
-  var myPoints = 100;
-  var currentBet = 0;
-  var mult = 1.00;
-  var crashPoint = 0;
-  var gameRunning = false;
-  var gameTimer = null;
-  var cashedOut = false;
-  var cashedAt = 0;
+        <a class="card proj" href="purana.html">
+          <span class="ico">💬</span>
+          <h3>Python चैटबॉट</h3>
+          <p>साइट से सीधे मेरे अपने Python सर्वर (Flask) से बात करने वाला बॉट। पुरानी साइट में मिलेगा।</p>
+          <span class="tag">Python + Flask</span>
+        </a>
 
-  function pointsDikhao() {
-    document.getElementById("points").innerText = myPoints;
-  }
+        <a class="card proj" href="purana.html">
+          <span class="ico">🧑‍💻</span>
+          <h3>कोड स्टूडियो</h3>
+          <p>साइट पर ही HTML, JavaScript और Python लिखो, प्रीव्यू देखो और फ़ाइल सेव करो।</p>
+          <span class="tag">Python + JS</span>
+        </a>
 
-  function startGame() {
-    var betInput = document.getElementById("bet");
-    var bet = Number(betInput.value);
+        <a class="card proj" href="https://github.com/sanjeev937/redesigned-computing-machine" target="_blank" rel="noopener">
+          <span class="ico">📊</span>
+          <h3>Python और डेटा का अभ्यास</h3>
+          <p>Colab की मेरी नोटबुक: लिस्ट, लूप, फ़ंक्शन, Pandas और चार्ट।</p>
+          <span class="tag">Python · GitHub</span>
+        </a>
 
-    if (bet <= 0 || bet > myPoints) {
-      document.getElementById("gameMsg").innerText = "सही दाँव डालो (0 से ज़्यादा, पॉइंट्स से कम)";
-      return;
-    }
+        <a class="card proj" href="purana.html">
+          <span class="ico">🧪</span>
+          <h3>पुरानी साइट के प्रयोग</h3>
+          <p>क्लिक काउंटर, कैलकुलेटर, मिनी सोशल वॉल, खर्च हिसाब और एक मज़े वाला गेम।</p>
+          <span class="tag">JavaScript</span>
+        </a>
 
-    currentBet = bet;
-    myPoints = myPoints - bet;
-    pointsDikhao();
+      </div>
+    </section>
 
-    mult = 1.00;
-    gameRunning = true;
-    cashedOut = false;
+    <section id="safar">
+      <h2>मेरा अब तक का सफ़र</h2>
+      <ol class="steps">
+        <li><span class="num">1</span><div><b>पहली वेबसाइट</b><br><span style="color:var(--muted)">GitHub Pages पर अपनी साइट चालू की।</span></div></li>
+        <li><span class="num">2</span><div><b>JavaScript के ऐप</b><br><span style="color:var(--muted)">काउंटर, कैलकुलेटर, सोशल वॉल, खर्च हिसाब।</span></div></li>
+        <li><span class="num">3</span><div><b>Python की शुरुआत</b><br><span style="color:var(--muted)">Colab में लिस्ट, लूप, फ़ंक्शन और डेटा।</span></div></li>
+        <li><span class="num">4</span><div><b>अपना सर्वर</b><br><span style="color:var(--muted)">PythonAnywhere पर Flask सर्वर और चैटबॉट।</span></div></li>
+      </ol>
+    </section>
 
-    // रैंडम क्रैश पॉइंट: ज़्यादातर बार जल्दी (1x-3x), कभी-कभार बहुत बड़ा (100x तक भी)
-    crashPoint = 1 + (-Math.log(Math.random()) * 3);
-    if (crashPoint > 100) { crashPoint = 100; }
+  </div>
+</main>
 
-    document.getElementById("plane").style.bottom = "10px";
-    document.getElementById("plane").style.left = "10px";
-    document.getElementById("plane").innerText = "✈️";
+<footer id="sampark">
+  <div class="wrap">
+    <span>© 2026 संजीव</span>
+    <span>GitHub पर मिलो: <a href="https://github.com/sanjeev937" target="_blank" rel="noopener"><b>sanjeev937</b></a></span>
+  </div>
+</footer>
 
-    document.getElementById("startBtn").disabled = true;
-    document.getElementById("cashBtn").disabled = false;
-    document.getElementById("gameMsg").innerText = "उड़ान शुरू... 🛫";
-
-    gameTimer = setInterval(function () {
-      mult = mult + 0.05;
-      document.getElementById("multiplier").innerText = mult.toFixed(2) + "x";
-      document.getElementById("plane").style.bottom = (10 + (mult - 1) * 15) + "px";
-      document.getElementById("plane").style.left = (10 + (mult - 1) * 20) + "px";
-
-      if (mult >= crashPoint) {
-        crash();
-      }
-    }, 100);
-  }
-
-  function cashOut() {
-    if (!gameRunning || cashedOut) return;
-    cashedOut = true;
-    cashedAt = mult;
-
-    var jeeta = Math.floor(currentBet * mult);
-    myPoints = myPoints + jeeta;
-    pointsDikhao();
-
-    document.getElementById("gameMsg").innerText = "✅ तुमने " + mult.toFixed(2) + "x पर कैश आउट किया (+" + jeeta + " पॉइंट्स)। जहाज़ अभी भी उड़ रहा है...";
-    document.getElementById("cashBtn").disabled = true;
-    // ध्यान दो: यहाँ clearInterval नहीं किया, जहाज़ असली क्रैश तक उड़ता रहेगा
-  }
-
-  function crash() {
-    clearInterval(gameTimer);
-    gameRunning = false;
-    document.getElementById("plane").innerText = "💥";
-
-    if (cashedOut) {
-      document.getElementById("gameMsg").innerText =
-        "💥 असली क्रैश " + mult.toFixed(2) + "x पर हुआ। तुम " + cashedAt.toFixed(2) + "x पर निकल गए थे!";
-    } else {
-      document.getElementById("gameMsg").innerText = "❌ क्रैश हो गया, " + currentBet + " पॉइंट्स हारे";
-    }
-    resetButtons();
-  }
-
-  function resetButtons() {
-    document.getElementById("startBtn").disabled = false;
-    document.getElementById("cashBtn").disabled = true;
-  }
-
-  pointsDikhao();
-</script>
-<div class="card">
-  <h2>🤖 मिनी AI से पूछो</h2>
-  <div id="chatBox" style="min-height:80px;max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;"></div>
-  <input id="chatInput" type="text" placeholder="कुछ पूछो... (जैसे: नमस्ते, तुम कौन हो)" style="width:100%;padding:10px;margin-bottom:8px;">
-  <button onclick="aiPucho()">पूछो</button>
-</div>
-
-<script>
-  function aiJawab(sawal) {
-    var s = sawal.toLowerCase();
-    if (s.indexOf("namaste") >= 0 || s.indexOf("नमस्ते") >= 0 || s.indexOf("hello") >= 0) {
-      return "नमस्ते! मैं संजीव का मिनी AI हूँ 😊";
-    } else if (s.indexOf("naam") >= 0 || s.indexOf("नाम") >= 0 || s.indexOf("kaun") >= 0 || s.indexOf("कौन") >= 0) {
-      return "मैं संजीव की वेबसाइट का एक छोटा बॉट हूँ।";
-    } else if (s.indexOf("sikh") >= 0 || s.indexOf("सीख") >= 0) {
-      return "संजीव अभी HTML, CSS, JavaScript और Python सीख रहा है।";
-    } else if (s.indexOf("navratri") >= 0 || s.indexOf("नवरात्रि") >= 0) {
-      return "नवरात्रि में माँ दुर्गा के नौ रूपों की पूजा होती है। 🙏";
-    } else if (s.indexOf("thank") >= 0 || s.indexOf("धन्यवाद") >= 0) {
-      return "आपका स्वागत है! 🙂";
-    } else {
-      return "ये मुझे अभी नहीं आता, संजीव मुझे और सिखाएगा! 😅";
-    }
-  }
-
-  function aiPucho() {
-    var box = document.getElementById("chatBox");
-    var inp = document.getElementById("chatInput");
-    var sawal = inp.value;
-    if (sawal == "") { return; }
-    box.innerHTML = box.innerHTML + "<p><b>तुम:</b> " + sawal + "</p>";
-    box.innerHTML = box.innerHTML + "<p><b>🤖:</b> " + aiJawab(sawal) + "</p>";
-    inp.value = "";
-    box.scrollTop = box.scrollHeight;
-  }
-</script>
-
-<div class="card">
-  <h2>💰 मेरा खर्च हिसाब</h2>
-  <input id="kharchaNaam" type="text" placeholder="किस चीज़ का खर्च?" style="width:100%;padding:10px;margin-bottom:8px;">
-  <input id="kharchaRakam" type="number" placeholder="कितने रुपये?" style="width:100%;padding:10px;margin-bottom:8px;">
-  <button onclick="kharchaJodo()">जोड़ो</button>
-  <button onclick="kharchaSaaf()">सब मिटाओ</button>
-  <div id="kharchaList" style="margin-top:12px;"></div>
-  <p id="kharchaTotal"><b>कुल: ₹0</b></p>
-</div>
-
-<script>
-  var kharche = [];
-
-  // पेज खुलते ही पुराना सेव किया हुआ डेटा निकालो
-  var saved = localStorage.getItem("meraKharcha");
-  if (saved) {
-    kharche = JSON.parse(saved);
-  }
-
-  function kharchaJodo() {
-    var naam = document.getElementById("kharchaNaam").value;
-    var rakam = Number(document.getElementById("kharchaRakam").value);
-    if (naam == "" || rakam <= 0) { return; }
-    kharche.push({ naam: naam, rakam: rakam });
-    localStorage.setItem("meraKharcha", JSON.stringify(kharche));
-    document.getElementById("kharchaNaam").value = "";
-    document.getElementById("kharchaRakam").value = "";
-    kharchaDikhao();
-  }
-
-  function kharchaSaaf() {
-    kharche = [];
-    localStorage.removeItem("meraKharcha");
-    kharchaDikhao();
-  }
-
-  function kharchaDikhao() {
-    var text = "";
-    var total = 0;
-    for (var i = 0; i < kharche.length; i++) {
-      text = text + "<p>" + kharche[i].naam + ": ₹" + kharche[i].rakam + "</p>";
-      total = total + kharche[i].rakam;
-    }
-    document.getElementById("kharchaList").innerHTML = text;
-    document.getElementById("kharchaTotal").innerHTML = "<b>कुल: ₹" + total + "</b>";
-  }
-
-  kharchaDikhao();
-
-</script>
-<div class="card">
-  <h2>🐍 मेरा Python एडिटर</h2>
-  <p id="pgState">⏳ Python लोड हो रहा है... (10 से 40 सेकंड रुको)</p>
-  <textarea id="pgCode" rows="9" style="width:100%;padding:10px;font-family:monospace;">dost = ["Raju", "Amit", "Sonu"]
-for naam in dost:
-    print("नमस्ते", naam)
-
-print("5 + 3 =", 5 + 3)</textarea>
-  <button onclick="pgChalao()">▶ चलाओ</button>
-  <pre id="pgOut" style="margin-top:10px;white-space:pre-wrap;"></pre>
-</div>
-
-<script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
-<script>
-  var pgEngine = null;
-
-  async function pgShuru() {
-    try {
-      pgEngine = await loadPyodide();
-      document.getElementById("pgState").innerText = "✅ Python तैयार है! कोड लिखो और ▶ दबाओ";
-    } catch (e) {
-      document.getElementById("pgState").innerText = "❌ Python लोड नहीं हुआ: " + e;
-    }
-  }
-
-  async function pgChalao() {
-    var out = document.getElementById("pgOut");
-    if (pgEngine == null) {
-      out.innerText = "अभी Python लोड हो रहा है, थोड़ा रुको 🙏";
-      return;
-    }
-    try {
-      pgEngine.runPython("import sys, io\nsys.stdout = io.StringIO()");
-      pgEngine.runPython(document.getElementById("pgCode").value);
-      out.innerText = pgEngine.runPython("sys.stdout.getvalue()");
-    } catch (e) {
-      out.innerText = "गलती:\n" + e;
-    }
-  }
-
-  pgShuru();
-</script>
-<div class="card">
-  <h2>🗳️ वोट दे सकते हो?</h2>
-  <input id="umraBox" type="number" placeholder="अपनी उम्र लिखो" style="width:100%;padding:10px;margin-bottom:8px;">
-  <button onclick="umraJaancho()">जाँचो</button>
-  <p id="umraJawab" style="margin-top:10px;font-size:1.1em;"></p>
-</div>
-
-<script>
-  function umraJaancho() {
-    var umra = Number(document.getElementById("umraBox").value);
-    var jawab = "";
-
-    if (umra <= 0) {
-      jawab = "सही उम्र लिखो 🙂";
-    } else if (umra >= 18) {
-      jawab = "हाँ, आप वोट दे सकते हो! 🗳️";
-    } else {
-      jawab = (18 - umra) + " साल बाद वोट दे सकोगे 🙂";
-    }
-
-    document.getElementById("umraJawab").innerText = jawab;
-  }
-</script>
-<div class="card">
-  <h2>🐍 मेरे Python सर्वर से बात करो</h2>
-  <input id="srvNaam" type="text" placeholder="अपना नाम लिखो" style="width:100%;padding:10px;margin-bottom:8px;">
-  <button onclick="srvPucho()">सर्वर से पूछो</button>
-  <p id="srvJawab" style="margin-top:10px;"></p>
-</div>
-
-<script>
-  function srvPucho() {
-    var naam = document.getElementById("srvNaam").value;
-    var out = document.getElementById("srvJawab");
-    if (naam == "") { out.innerText = "पहले नाम लिखो 🙂"; return; }
-    out.innerText = "⏳ सर्वर से पूछ रहा हूँ...";
-    fetch("https://sanjeev420.pythonanywhere.com/namaste?naam=" + encodeURIComponent(naam))
-      .then(function (r) { return r.json(); })
-      .then(function (d) { out.innerText = d.jawab; })
-      .catch(function (e) { out.innerText = "❌ सर्वर से जवाब नहीं आया"; });
-  }
-</script>
-<div class="card">
-  <h2>💬 मेरा Python चैटबॉट</h2>
-  <div id="botBox" style="min-height:80px;max-height:240px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;"></div>
-  <input id="botInput" type="text" placeholder="कुछ पूछो... (जैसे: नमस्ते, Python क्या है)" style="width:100%;padding:10px;margin-bottom:8px;">
-  <button onclick="botPucho()">भेजो</button>
-</div>
-
-<script>
-  function botLikho(kaun, text) {
-    var box = document.getElementById("botBox");
-    var p = document.createElement("p");
-    p.textContent = kaun + " " + text;
-    box.appendChild(p);
-    box.scrollTop = box.scrollHeight;
-  }
-
-  function botPucho() {
-    var inp = document.getElementById("botInput");
-    var sawal = inp.value.trim();
-    if (sawal == "") { return; }
-    botLikho("तुम:", sawal);
-    inp.value = "";
-    fetch("https://sanjeev420.pythonanywhere.com/bot?sawal=" + encodeURIComponent(sawal))
-      .then(function (r) { return r.json(); })
-      .then(function (d) { botLikho("🤖", d.jawab); })
-      .catch(function () { botLikho("🤖", "❌ सर्वर से जवाब नहीं आया"); });
-  }
-</script>
-<div class="card">
-  <h2>📒 मेरा हिसाब-किताब (Tally जैसा)</h2>
-  <input id="tlDate" type="date" style="width:100%;padding:10px;margin-bottom:8px;">
-  <input id="tlDr" type="text" placeholder="डेबिट खाता (जैसे: Cash)" style="width:100%;padding:10px;margin-bottom:8px;">
-  <input id="tlCr" type="text" placeholder="क्रेडिट खाता (जैसे: Sales)" style="width:100%;padding:10px;margin-bottom:8px;">
-  <input id="tlAmt" type="number" placeholder="रकम ₹" style="width:100%;padding:10px;margin-bottom:8px;">
-  <input id="tlNote" type="text" placeholder="विवरण (वैकल्पिक)" style="width:100%;padding:10px;margin-bottom:8px;">
-  <button onclick="tlJodo()">वाउचर जोड़ो</button>
-  <button onclick="tlSaaf()">सब मिटाओ</button>
-  <p id="tlMsg"></p>
-  <h3>खाता-बही शेष (Trial Balance)</h3>
-  <div id="tlTB"></div>
-  <h3>वाउचर सूची</h3>
-  <div id="tlList"></div>
-</div>
-
-<script>
-  var tlV = [];
-  try {
-    var tlS = localStorage.getItem("tlVouchers");
-    if (tlS) { tlV = JSON.parse(tlS); }
-  } catch (e) {}
-
-  document.getElementById("tlDate").valueAsDate = new Date();
-
-  function tlEsc(t) {
-    return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  }
-
-  function tlSave() {
-    try { localStorage.setItem("tlVouchers", JSON.stringify(tlV)); } catch (e) {}
-  }
-
-  function tlRs(n) {
-    return "₹" + n.toLocaleString("en-IN");
-  }
-
-  function tlJodo() {
-    var d = document.getElementById("tlDate").value;
-    var dr = document.getElementById("tlDr").value.trim();
-    var cr = document.getElementById("tlCr").value.trim();
-    var amt = Number(document.getElementById("tlAmt").value);
-    var note = document.getElementById("tlNote").value.trim();
-    var msg = document.getElementById("tlMsg");
-
-    if (dr == "" || cr == "" || amt <= 0) {
-      msg.innerText = "डेबिट खाता, क्रेडिट खाता और रकम भरना ज़रूरी है 🙂";
-      return;
-    }
-    if (dr.toLowerCase() == cr.toLowerCase()) {
-      msg.innerText = "डेबिट और क्रेडिट एक ही खाता नहीं हो सकते।";
-      return;
-    }
-    tlV.push({ d: d, dr: dr, cr: cr, amt: amt, note: note });
-    tlSave();
-    msg.innerText = "✅ वाउचर जुड़ गया";
-    document.getElementById("tlDr").value = "";
-    document.getElementById("tlCr").value = "";
-    document.getElementById("tlAmt").value = "";
-    document.getElementById("tlNote").value = "";
-    tlDikhao();
-  }
-
-  function tlHatao(i) {
-    tlV.splice(i, 1);
-    tlSave();
-    tlDikhao();
-  }
-
-  function tlSaaf() {
-    tlV = [];
-    tlSave();
-    document.getElementById("tlMsg").innerText = "सब मिटा दिया";
-    tlDikhao();
-  }
-
-  function tlDikhao() {
-    var bal = {};
-    var naam = {};
-    for (var i = 0; i < tlV.length; i++) {
-      var v = tlV[i];
-      var kd = v.dr.toLowerCase();
-      var kc = v.cr.toLowerCase();
-      naam[kd] = v.dr;
-      naam[kc] = v.cr;
-      bal[kd] = (bal[kd] || 0) + v.amt;
-      bal[kc] = (bal[kc] || 0) - v.amt;
-    }
-
-    var tb = "<table style='width:100%;border-collapse:collapse;'>";
-    tb += "<tr><th align='left'>खाता</th><th align='right'>Debit</th><th align='right'>Credit</th></tr>";
-    var sumDr = 0;
-    var sumCr = 0;
-    for (var k in bal) {
-      var b = bal[k];
-      var dr = b > 0 ? b : 0;
-      var cr = b < 0 ? -b : 0;
-      sumDr += dr;
-      sumCr += cr;
-      tb += "<tr><td>" + tlEsc(naam[k]) + "</td><td align='right'>" + (dr ? tlRs(dr) : "") + "</td><td align='right'>" + (cr ? tlRs(cr) : "") + "</td></tr>";
-    }
-    tb += "<tr><td><b>कुल</b></td><td align='right'><b>" + tlRs(sumDr) + "</b></td><td align='right'><b>" + tlRs(sumCr) + "</b></td></tr>";
-    tb += "</table>";
-    tb += "<p>" + (sumDr == sumCr ? "मिलान ✅ (Debit = Credit)" : "⚠️ मिलान नहीं हुआ") + "</p>";
-    document.getElementById("tlTB").innerHTML = tlV.length ? tb : "<p>अभी कोई वाउचर नहीं है।</p>";
-
-    var list = "";
-    for (var j = tlV.length - 1; j >= 0; j--) {
-      var w = tlV[j];
-      list += "<p>" + tlEsc(w.d) + " | <b>" + tlEsc(w.dr) + "</b> Dr → <b>" + tlEsc(w.cr) + "</b> Cr | " + tlRs(w.amt) +
-        (w.note ? " | " + tlEsc(w.note) : "") +
-        " <button onclick='tlHatao(" + j + ")'>❌</button></p>";
-    }
-    document.getElementById("tlList").innerHTML = list;
-  }
-
-  tlDikhao();
-</script>
 </body>
 </html>
