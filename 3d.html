@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D वीडियो स्टूडियो | संजीव</title>
+<meta name="description" content="कोड से बना घूमता 3D सीन, जिसका वीडियो सीधे रिकॉर्ड करके सेव कर सकते हो।">
+<style>
+  :root{
+    --bg:#f6f3fb;
+    --card:#ffffff;
+    --text:#211c2e;
+    --muted:#6a6380;
+    --line:#e0daee;
+    --main:#7c3aed;
+    --on-main:#ffffff;
+    --bad:#b91c1c;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#120f1c;
+      --card:#1b1729;
+      --text:#f0ecfa;
+      --muted:#a49cbf;
+      --line:#2f2946;
+      --main:#a78bfa;
+      --on-main:#150f26;
+      --bad:#f87171;
+    }
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif;
+    line-height:1.55;
+  }
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 16px; }
+  header{
+    background:var(--card); border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:10;
+  }
+  header .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; padding-top:12px; padding-bottom:12px;
+  }
+  header a{ text-decoration:none; color:var(--main); font-weight:700; }
+  header h1{ margin:0; font-size:1.1rem; }
+
+  main.wrap{ padding-top:20px; padding-bottom:40px; }
+  .intro{ color:var(--muted); margin:0 0 16px; }
+
+  .layout{ display:grid; gap:16px; }
+  @media (min-width:900px){
+    .layout{ grid-template-columns:1fr 320px; align-items:start; }
+  }
+  .card{
+    background:var(--card); border:1px solid var(--line);
+    border-radius:16px; padding:16px;
+  }
+  .card h2{ margin:0 0 12px; font-size:1.05rem; }
+
+  #stage{
+    width:100%; aspect-ratio:16 / 9; display:block;
+    border-radius:12px; background:#000; touch-action:none;
+  }
+  .nogl{ color:var(--bad); font-weight:700; }
+
+  label{ display:block; font-size:.85rem; color:var(--muted); margin:12px 0 4px; }
+  select, input[type=range]{ width:100%; }
+  select{
+    padding:10px; font:inherit; border-radius:10px;
+    border:1px solid var(--line); background:var(--bg); color:var(--text);
+  }
+  input[type=color]{
+    width:100%; height:44px; border:1px solid var(--line);
+    border-radius:10px; background:none; padding:2px; cursor:pointer;
+  }
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+  .row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+  button{
+    font:inherit; cursor:pointer; font-weight:700;
+    padding:11px 18px; border-radius:10px;
+    border:2px solid var(--main); background:var(--main); color:var(--on-main);
+  }
+  button.alt{ background:transparent; color:var(--main); }
+  button.rec{ background:#dc2626; border-color:#dc2626; color:#fff; }
+  button:active{ transform:scale(.98); }
+  #status{ min-height:1.4em; margin:10px 0 0; color:var(--muted); font-size:.92rem; }
+
+  #result{ margin-top:14px; display:none; }
+  #result video{ width:100%; border-radius:12px; background:#000; }
+  #result a{
+    display:inline-block; margin-top:10px; font-weight:700;
+    color:var(--main);
+  }
+  .note{ color:var(--muted); font-size:.88rem; margin-top:18px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>🎬 3D वीडियो स्टूडियो</h1>
+    <a href="index.html">← होम</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="intro">आकार, रंग और गति चुनो, फिर <b>रिकॉर्ड</b> दबाकर घूमते 3D का वीडियो सेव करो। उँगली से 3D चीज़ को घुमा भी सकते हो।</p>
+
+  <div class="layout">
+
+    <div class="card">
+      <canvas id="stage"></canvas>
+      <p id="status"></p>
+      <div id="result">
+        <video id="player" controls playsinline></video>
+        <a id="dl" download="mera-3d-video.webm">⬇ वीडियो सेव करो</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>सेटिंग</h2>
+
+      <label for="shape">आकार</label>
+      <select id="shape">
+        <option value="cube">🧊 क्यूब</option>
+        <option value="sphere">🔮 गोला</option>
+        <option value="torus">🍩 डोनट (टोरस)</option>
+      </select>
+
+      <div class="two">
+        <div>
+          <label for="col">चीज़ का रंग</label>
+          <input id="col" type="color" value="#7c3aed">
+        </div>
+        <div>
+          <label for="bgc">पीछे का रंग</label>
+          <input id="bgc" type="color" value="#0f0a1f">
+        </div>
+      </div>
+
+      <label for="speed">घूमने की गति</label>
+      <input id="speed" type="range" min="0" max="3" step="0.1" value="1">
+
+      <label for="secs">रिकॉर्डिंग की लंबाई</label>
+      <select id="secs">
+        <option value="5">5 सेकंड</option>
+        <option value="10" selected>10 सेकंड</option>
+        <option value="20">20 सेकंड</option>
+      </select>
+
+      <div class="row">
+        <button id="recBtn" class="rec" onclick="recToggle()">⏺ रिकॉर्ड शुरू</button>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="note">वीडियो .webm फ़ाइल में बनता है, जो Chrome में चलती है। गैलरी में न खुले तो किसी वीडियो ऐप (जैसे VLC) में खोलो, या बाद में कन्वर्टर से MP4 बना लो।</p>
+</main>
+
+<script>
+  /* ---------- छोटे गणित वाले औज़ार (4x4 मैट्रिक्स) ---------- */
+  function mul(a, b) {
+    var o = new Float32Array(16);
+    for (var c = 0; c < 4; c++) {
+      for (var r = 0; r < 4; r++) {
+        var s = 0;
+        for (var k = 0; k < 4; k++) { s += a[k * 4 + r] * b[c * 4 + k]; }
+        o[c * 4 + r] = s;
+      }
+    }
+    return o;
+  }
+  function perspective(fovy, aspect, near, far) {
+    var f = 1 / Math.tan(fovy / 2);
+    return new Float32Array([
+      f / aspect, 0, 0, 0,
+      0, f, 0, 0,
+      0, 0, (far + near) / (near - far), -1,
+      0, 0, 2 * far * near / (near - far), 0
+    ]);
+  }
+  function translate(x, y, z) {
+    return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, x,y,z,1]);
+  }
+  function rotX(a) {
+    var c = Math.cos(a), s = Math.sin(a);
+    return new Float32Array([1,0,0,0, 0,c,s,0, 0,-s,c,0, 0,0,0,1]);
+  }
+  function rotY(a) {
+    var c = Math.cos(a), s = Math.sin(a);
+    return new Float32Array([c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1]);
+  }
+  function hexRgb(h) {
+    return [parseInt(h.substr(1, 2), 16) / 255, parseInt(h.substr(3, 2), 16) / 255, parseInt(h.substr(5, 2), 16) / 255];
+  }
+
+  /* ---------- आकार बनाना ---------- */
+  function makeCube() {
+    var faces = [
+      [[0,0,1],  [-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]],
+      [[0,0,-1], [1,-1,-1],[-1,-1,-1],[-1,1,-1],[1,1,-1]],
+      [[0,1,0],  [-1,1,1],[1,1,1],[1,1,-1],[-1,1,-1]],
+      [[0,-1,0], [-1,-1,-1],[1,-1,-1],[1,-1,1],[-1,-1,1]],
+      [[1,0,0],  [1,-1,1],[1,-1,-1],[1,1,-1],[1,1,1]],
+      [[-1,0,0], [-1,-1,-1],[-1,-1,1],[-1,1,1],[-1,1,-1]]
+    ];
+    var pos = [], nor = [], idx = [];
+    for (var f = 0; f < faces.length; f++) {
+      var n = faces[f][0];
+      for (var v = 1; v <= 4; v++) {
+        var p = faces[f][v];
+        pos.push(p[0] * 0.8, p[1] * 0.8, p[2] * 0.8);
+        nor.push(n[0], n[1], n[2]);
+      }
+      var b = f * 4;
+      idx.push(b, b + 1, b + 2, b, b + 2, b + 3);
+    }
+    return { pos: new Float32Array(pos), nor: new Float32Array(nor), idx: new Uint16Array(idx) };
+  }
+  function makeSphere() {
+    var lat = 24, lon = 36, pos = [], nor = [], idx = [];
+    for (var i = 0; i <= lat; i++) {
+      var th = i * Math.PI / lat;
+      for (var j = 0; j <= lon; j++) {
+        var ph = j * 2 * Math.PI / lon;
+        var x = Math.sin(th) * Math.cos(ph), y = Math.cos(th), z = Math.sin(th) * Math.sin(ph);
+        pos.push(x * 1.1, y * 1.1, z * 1.1);
+        nor.push(x, y, z);
+      }
+    }
+    for (var a = 0; a < lat; a++) {
+      for (var b2 = 0; b2 < lon; b2++) {
+        var p1 = a * (lon + 1) + b2, p2 = p1 + lon + 1;
+        idx.push(p1, p2, p1 + 1, p1 + 1, p2, p2 + 1);
+      }
+    }
+    return { pos: new Float32Array(pos), nor: new Float32Array(nor), idx: new Uint16Array(idx) };
+  }
+  function makeTorus() {
+    var R = 0.8, r = 0.36, seg = 48, tub = 24, pos = [], nor = [], idx = [];
+    for (var i = 0; i <= seg; i++) {
+      var u = i * 2 * Math.PI / seg;
+      for (var j = 0; j <= tub; j++) {
+        var v = j * 2 * Math.PI / tub;
+        var cx = Math.cos(v), cy = Math.sin(v);
+        var x = (R + r * cx) * Math.cos(u), y = r * cy, z = (R + r * cx) * Math.sin(u);
+        pos.push(x, y, z);
+        nor.push(cx * Math.cos(u), cy, cx * Math.sin(u));
+      }
+    }
+    for (var a = 0; a < seg; a++) {
+      for (var b = 0; b < tub; b++) {
+        var p1 = a * (tub + 1) + b, p2 = p1 + tub + 1;
+        idx.push(p1, p1 + 1, p2, p1 + 1, p2 + 1, p2);
+      }
+    }
+    return { pos: new Float32Array(pos), nor: new Float32Array(nor), idx: new Uint16Array(idx) };
+  }
+
+  /* ---------- WebGL शुरू करना ---------- */
+  var canvas = document.getElementById("stage");
+  var statusEl = document.getElementById("status");
+  var gl = canvas.getContext("webgl", { antialias: true }) || canvas.getContext("experimental-webgl");
+
+  var VS = "attribute vec3 aPos; attribute vec3 aNor; uniform mat4 uMVP; uniform mat4 uModel;" +
+           "varying vec3 vNor; varying vec3 vPos;" +
+           "void main(){ vNor = (uModel * vec4(aNor, 0.0)).xyz; vPos = (uModel * vec4(aPos, 1.0)).xyz;" +
+           "gl_Position = uMVP * vec4(aPos, 1.0); }";
+  var FS = "precision mediump float; uniform vec3 uColor; varying vec3 vNor; varying vec3 vPos;" +
+           "void main(){ vec3 n = normalize(vNor); vec3 L = normalize(vec3(0.5, 0.8, 1.0));" +
+           "float d = max(dot(n, L), 0.0); vec3 V = normalize(vec3(0.0, 0.0, 4.0) - vPos);" +
+           "vec3 H = normalize(L + V); float s = pow(max(dot(n, H), 0.0), 32.0) * 0.5;" +
+           "vec3 col = uColor * (0.25 + 0.85 * d) + vec3(s); gl_FragColor = vec4(col, 1.0); }";
+
+  var prog, loc = {}, meshes = {}, buf = {};
+  var rx = 0.4, ry = 0.6, dragging = false, lastX = 0, lastY = 0;
+
+  function shader(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+
+  function upload(m) {
+    var p = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, p); gl.bufferData(gl.ARRAY_BUFFER, m.pos, gl.STATIC_DRAW);
+    var n = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, n); gl.bufferData(gl.ARRAY_BUFFER, m.nor, gl.STATIC_DRAW);
+    var i = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, i); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, m.idx, gl.STATIC_DRAW);
+    return { p: p, n: n, i: i, count: m.idx.length };
+  }
+
+  function start() {
+    prog = gl.createProgram();
+    gl.attachShader(prog, shader(gl.VERTEX_SHADER, VS));
+    gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FS));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+    loc.pos = gl.getAttribLocation(prog, "aPos");
+    loc.nor = gl.getAttribLocation(prog, "aNor");
+    loc.mvp = gl.getUniformLocation(prog, "uMVP");
+    loc.model = gl.getUniformLocation(prog, "uModel");
+    loc.color = gl.getUniformLocation(prog, "uColor");
+    meshes.cube = upload(makeCube());
+    meshes.sphere = upload(makeSphere());
+    meshes.torus = upload(makeTorus());
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+    requestAnimationFrame(draw);
+  }
+
+  function fitCanvas() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = Math.max(2, Math.round(canvas.clientWidth * dpr));
+    var h = Math.max(2, Math.round(canvas.clientHeight * dpr));
+    if (canvas.width != w || canvas.height != h) {
+      canvas.width = w;
+      canvas.height = h;
+    }
+  }
+
+  var lastT = 0;
+  function draw(t) {
+    var dt = lastT ? (t - lastT) / 1000 : 0;
+    lastT = t;
+    fitCanvas();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+
+    var bg = hexRgb(document.getElementById("bgc").value);
+    gl.clearColor(bg[0], bg[1], bg[2], 1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    var speed = Number(document.getElementById("speed").value);
+    if (!dragging) {
+      ry += dt * 0.9 * speed;
+      rx += dt * 0.5 * speed;
+    }
+    var bob = Math.sin(t / 700) * 0.12 * (speed > 0 ? 1 : 0);
+
+    var m = meshes[document.getElementById("shape").value];
+    var model = mul(translate(0, bob, 0), mul(rotY(ry), rotX(rx)));
+    var view = translate(0, 0, -4);
+    var proj = perspective(50 * Math.PI / 180, canvas.width / canvas.height, 0.1, 50);
+    var mvp = mul(proj, mul(view, model));
+
+    gl.uniformMatrix4fv(loc.mvp, false, mvp);
+    gl.uniformMatrix4fv(loc.model, false, model);
+    gl.uniform3fv(loc.color, hexRgb(document.getElementById("col").value));
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, m.p);
+    gl.enableVertexAttribArray(loc.pos);
+    gl.vertexAttribPointer(loc.pos, 3, gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, m.n);
+    gl.enableVertexAttribArray(loc.nor);
+    gl.vertexAttribPointer(loc.nor, 3, gl.FLOAT, false, 0, 0);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, m.i);
+    gl.drawElements(gl.TRIANGLES, m.count, gl.UNSIGNED_SHORT, 0);
+
+    requestAnimationFrame(draw);
+  }
+
+  /* उँगली/माउस से घुमाना */
+  canvas.addEventListener("pointerdown", function (e) {
+    dragging = true; lastX = e.clientX; lastY = e.clientY;
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener("pointermove", function (e) {
+    if (!dragging) { return; }
+    ry += (e.clientX - lastX) * 0.01;
+    rx += (e.clientY - lastY) * 0.01;
+    lastX = e.clientX; lastY = e.clientY;
+  });
+  function stopDrag() { dragging = false; }
+  canvas.addEventListener("pointerup", stopDrag);
+  canvas.addEventListener("pointercancel", stopDrag);
+
+  /* ---------- वीडियो रिकॉर्डिंग ---------- */
+  var recorder = null, chunks = [], timer = null, tick = null, left = 0;
+
+  function pickMime() {
+    var list = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm", "video/mp4"];
+    for (var i = 0; i < list.length; i++) {
+      if (window.MediaRecorder && MediaRecorder.isTypeSupported(list[i])) { return list[i]; }
+    }
+    return "";
+  }
+
+  function recToggle() {
+    if (recorder && recorder.state == "recording") { recorder.stop(); return; }
+    if (!window.MediaRecorder || !canvas.captureStream) {
+      statusEl.innerText = "❌ इस ब्राउज़र में वीडियो रिकॉर्डिंग नहीं चलती। Chrome आज़माओ, या फ़ोन की स्क्रीन रिकॉर्डिंग इस्तेमाल करो।";
+      return;
+    }
+    var mime = pickMime();
+    var stream = canvas.captureStream(30);
+    try {
+      recorder = mime ? new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 4000000 }) : new MediaRecorder(stream);
+    } catch (e) {
+      statusEl.innerText = "❌ रिकॉर्डर शुरू नहीं हुआ: " + e.message;
+      return;
+    }
+    chunks = [];
+    recorder.ondataavailable = function (e) { if (e.data && e.data.size > 0) { chunks.push(e.data); } };
+    recorder.onstop = function () {
+      clearInterval(tick);
+      clearTimeout(timer);
+      var type = recorder.mimeType || "video/webm";
+      var blob = new Blob(chunks, { type: type });
+      var url = URL.createObjectURL(blob);
+      document.getElementById("player").src = url;
+      var a = document.getElementById("dl");
+      a.href = url;
+      a.download = "mera-3d-video." + (type.indexOf("mp4") >= 0 ? "mp4" : "webm");
+      document.getElementById("result").style.display = "block";
+      document.getElementById("recBtn").innerText = "⏺ रिकॉर्ड शुरू";
+      statusEl.innerText = "✅ वीडियो तैयार है। नीचे देखो और सेव करो।";
+    };
+    recorder.start(250);
+    left = Number(document.getElementById("secs").value);
+    document.getElementById("result").style.display = "none";
+    document.getElementById("recBtn").innerText = "⏹ रोको";
+    statusEl.innerText = "🔴 रिकॉर्ड हो रहा है... " + left + " सेकंड बाकी";
+    tick = setInterval(function () {
+      left--;
+      if (left > 0) { statusEl.innerText = "🔴 रिकॉर्ड हो रहा है... " + left + " सेकंड बाकी"; }
+    }, 1000);
+    timer = setTimeout(function () {
+      if (recorder && recorder.state == "recording") { recorder.stop(); }
+    }, left * 1000);
+  }
+
+  if (!gl) {
+    canvas.style.display = "none";
+    statusEl.className = "nogl";
+    statusEl.innerText = "❌ इस ब्राउज़र/फ़ोन में 3D (WebGL) चालू नहीं है। Chrome अपडेट करो या दूसरा ब्राउज़र आज़माओ।";
+    document.getElementById("recBtn").disabled = true;
+  } else {
+    start();
+  }
+</script>
+</body>
+</html>
